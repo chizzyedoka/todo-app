@@ -1,7 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const signupRoute = require("./routes/users");
+const signupRoute = require("./routes/usersignup");
+const signinRoute = require("./routes/login");
+const taskRoute = require("./routes/tasks");
 
 const app = express();
 app.use(express.json());
@@ -23,6 +25,12 @@ mongoose
 
 // register a new user
 app.use("/signUp", signupRoute);
+
+// sign in
+app.use("/signIn", signinRoute);
+
+// task routes
+app.use("/task", taskRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome");

@@ -81,9 +81,33 @@
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
-      // Here, you can validate the username and password.
-      // If the login is successful, redirect to the todo app page with the username as a URL parameter.
-      window.location.href = `todo.html?username=${username}`;
+      const data = {
+        username: username,
+        password: password,
+      };
+
+      // Send a POST request to your endpoint
+      fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => {
+          if (response.ok) {
+            // Here, you can validate the username and password.
+           // If the login is successful, redirect to the todo app page with the username as a URL parameter.
+            window.location.href = `todo.html?username=${username}`;
+          } else {
+            // Handle login error, e.g., show an error message
+            console.error("Login failed.");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
     });
+      
   </script>
 </html>

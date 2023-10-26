@@ -7,6 +7,9 @@ const { validateUser } = require("../middleware/validate");
 const router = express.Router();
 
 // render signup page
+router.get("/", (req, res) => {
+  res.render("signup", { condition: true }); // Render the signup.ejs file
+});
 
 // register a new user
 router.post("/", async (req, res) => {

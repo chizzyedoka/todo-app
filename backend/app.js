@@ -11,7 +11,7 @@ const app = express();
 // set EJS as template engine
 app.set("view engine", "ejs");
 app.set("views", "../frontend/views");
-app.use(express.static("public"));
+app.use(express.static("../frontend/public"));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));

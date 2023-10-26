@@ -7,12 +7,20 @@ const signinRoute = require("./routes/login");
 const taskRoute = require("./routes/tasks");
 const errorHandler = require("./middleware/error");
 const app = express();
+
+// specify frontend link, if to allow for all routes, replace the url string with "*"
+const myFrontend = {
+  origin: 'http://localhost:3000'
+}
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.listen(5000, () => {
   console.log("Listening on port 5000");
 });
+
+app.use(cors(myFrontend));
 
 // connect to mongoose database
 mongoose

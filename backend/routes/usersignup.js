@@ -11,13 +11,6 @@ router.post("/", async (req, res) => {
   const password = req.body.password;
 
   // validate request body is valid
-  function validateUser(user) {
-    const schema = Joi.object({
-      username: Joi.string().min(3).max(30).required(),
-      password: Joi.string().min(5).max(1000).required(),
-    });
-    return schema.validate(user);
-  }
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -33,8 +26,6 @@ router.post("/", async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
-  // set header(headerName,value)
-  res.header("x-auth-token", token);
   res.status(201).json({
     message: "User created successfully",
   });

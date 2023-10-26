@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { Task } = require("../models/tasks");
+const auth = require("../middleware/authToken");
+const validate = require("../middleware/validate");
+
 const {
   getAllTask,
   createTask,
@@ -11,17 +14,17 @@ const {
 const { findTask } = require("../middleware/task");
 
 // get all tasks
-router.get("/", getAllTask);
+router.get("/", auth, getAllTask);
 
 // get a specific task
-router.get("/:taskname", getOneTask);
+router.get("/:taskname", auth, getOneTask);
 
 // create a task
-router.post("/", createTask);
+router.post("/", auth, createTask);
 
 // update a task status
-router.put("/:taskname", updateTask);
+router.put("/:taskname", auth, updateTask);
 
 // delete a task
-router.delete("/:taskname", findTask, deleteTask);
+router.delete("/:taskname", auth, findTask, deleteTask);
 module.exports = router;

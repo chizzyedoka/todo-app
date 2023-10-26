@@ -11,4 +11,13 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
+// validate body
+function validateBody(body) {
+  const schema = Joi.object({
+    taskName: Joi.string().min(3).max(30).required(),
+  });
+  return schema.validate(body);
+}
+
 module.exports.validateUser = validateUser;
+module.exports.validateBody = validateBody;

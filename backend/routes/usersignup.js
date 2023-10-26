@@ -5,6 +5,9 @@ const { User } = require("../models/users");
 const { validateUser } = require("../middleware/validate");
 
 const router = express.Router();
+
+// render signup page
+
 // register a new user
 router.post("/", async (req, res) => {
   const username = req.body.username;
@@ -26,6 +29,7 @@ router.post("/", async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
+  // res.render("../frontend/signup.ejs");
   res.status(201).json({
     message: "User created successfully",
   });

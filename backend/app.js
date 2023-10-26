@@ -7,6 +7,12 @@ const signinRoute = require("./routes/login");
 const taskRoute = require("./routes/tasks");
 const errorHandler = require("./middleware/error");
 const app = express();
+
+// set EJS as template engine
+app.set("view engine", "ejs");
+app.set("views", "../frontend/views");
+app.use(express.static("public"));
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

@@ -15,6 +15,7 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  console.log(req.body);
 
   // validate request body is valid
   const { error } = validateUser(req.body);
@@ -32,10 +33,11 @@ router.post("/", async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
-  // res.render("../frontend/signup.ejs");
-  res.status(201).json({
-    message: "User created successfully",
-  });
+  console.log("success");
+  res.send("<h1>Welcome</h1>");
+  // res.status(201).json({
+  //   message: "User created successfully",
+  // });
 });
 
 module.exports = router;

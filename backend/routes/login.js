@@ -32,6 +32,8 @@ router.post("/", async (req, res) => {
     });
 
   const token = user.generateAuthToken();
+  const maxAge = 3 * 24 * 60 * 60;
+  res.cookie("token", token, { httpOnly: true, maxAge: maxAge * 1000 });
   const username = req.body.username;
   res.render("index", { username });
   // res.status(200).json({

@@ -7,6 +7,11 @@ require("dotenv").config();
 const { User } = require("../models/users");
 const { validateUser } = require("../middleware/validate");
 
+// render signup page
+router.get("/", (req, res) => {
+  res.render("login", { condition: true }); // Render the signup.ejs file
+});
+
 router.post("/", async (req, res) => {
   // validate body of request
   const { error } = validateUser(req.body);
@@ -27,14 +32,11 @@ router.post("/", async (req, res) => {
     });
 
   const token = user.generateAuthToken();
-  // create web token
-  //   const token = user.generateAuthToken();
-
-  // set header(headerName,value)
-  console.log({ token });
-  res.status(200).json({
-    message: `Successfully logged in as ${user.username}`,
-  });
+  const username = req.body.username;
+  res.render("index", { username });
+  // res.status(200).json({
+  //   message: `Successfully logged in as ${user.username}`,
+  // });
 });
 // sign him in
 

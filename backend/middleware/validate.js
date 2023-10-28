@@ -15,6 +15,7 @@ function validateUser(user) {
 function validateBody(body) {
   const schema = Joi.object({
     taskName: Joi.string().min(3).max(30).required(),
+    taskStatus: Joi.string().valid("pending", "completed", "cancelled"),
   });
   return schema.validate(body);
 }

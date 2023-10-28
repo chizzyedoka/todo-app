@@ -3,7 +3,12 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const { User } = require("../models/users");
 const { validateUser } = require("../middleware/validate");
-
+const {
+  completedTasks,
+  pendingTasks,
+  deletedTasks,
+} = require("../controllers/taskSummary");
+const tasks = require("../controllers/task");
 const router = express.Router();
 
 // render signup page
@@ -15,7 +20,6 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  console.log(req.body);
 
   // validate request body is valid
   const { error } = validateUser(req.body);
@@ -33,10 +37,16 @@ router.post("/", async (req, res) => {
   await user.save();
 
   const token = user.generateAuthToken();
-  console.log("success");
-  res.send("<h1>Welcome</h1>");
-  // res.status(201).json({
-  //   message: "User created successfully",
+  // console.log({ message: "success", token });
+  const maxAge = 3 * 24 * 60 * 60;
+  res.cookie("token", token, { httpOnly: true, maxAge: maxAge * 1000 });
+  res.render("welcome", { username });
+  // res.render("task", {
+  //   completedTasks,
+  //   pendingTasks,
+  //   deletedTasks,
+  //   username,
+  //   tasks,
   // });
 });
 

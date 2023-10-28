@@ -26,12 +26,14 @@ const createTask = async (req, res) => {
   const { error } = validateBody(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const username = req.user.name;
-  const { taskName, taskStatus } = req.body;
+  let { taskName, taskStatus } = req.body;
   const task = new Task({ taskName, taskStatus, username });
+  console.log(task);
   await task.save();
-  res.status(201).json({
-    message: "Task created successfully",
-  });
+  res.redirect("/");
+  // res.status(201).json({
+  //   message: "Task created successfully",
+  // });
 };
 
 const getOneTask = async (req, res) => {

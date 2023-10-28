@@ -1,10 +1,12 @@
 require("express-async-errors");
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const signupRoute = require("./routes/usersignup");
 const signinRoute = require("./routes/login");
 const taskRoute = require("./routes/tasks");
+const welcomeRoute = require("./routes/welcome");
 const errorHandler = require("./middleware/error");
 const app = express();
 
@@ -15,6 +17,7 @@ app.use(express.static("../frontend/public"));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.listen(5000, () => {
   console.log("Listening on port 5000");
@@ -32,6 +35,9 @@ mongoose
 
 // register a new user
 app.use("/signup", signupRoute);
+
+// welcome page after signup
+app.use("/welcome", welcomeRoute);
 
 // sign in
 app.use("/login", signinRoute);

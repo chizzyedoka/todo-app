@@ -11,16 +11,34 @@ const {
   updateTask,
   deleteTask,
 } = require("../controllers/task");
+
+const {
+  completedTasks,
+  pendingTasks,
+  deletedTasks,
+} = require("../controllers/taskSummary");
+
 const { findTask } = require("../middleware/task");
 
 // get all tasks
 router.get("/", auth, getAllTask);
+
+router.get("/overview", (req, res) => {
+  username = req.body.username;
+  res.render("overview", {
+    completedTasks,
+    pendingTasks,
+    deletedTasks,
+    username,
+  });
+});
 
 // get a specific task
 router.get("/:taskname", auth, getOneTask);
 
 // create a task
 router.post("/", auth, createTask);
+// router.post("/", auth, createTask);
 
 // update a task status
 router.put("/:taskname", auth, updateTask);

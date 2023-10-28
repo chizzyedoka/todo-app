@@ -1,10 +1,9 @@
 const jwt = require("jsonwebtoken");
 function authenticateToken(req, res, next) {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+    const token = req.cookies.token;
+    // if no token redirect to login page
     if (!token) return res.status(401).send("Access denied! No Token provided");
-    console.log(token);
     try {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       if (!decoded) return res.status(400).send("Invalid token");

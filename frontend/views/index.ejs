@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task UI</title>
+    <link rel="stylesheet" href="/indexstyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h5><%= username %></h5>
+      <section>
+        <h2>My To-do App</h2>
+        <div class="indicator">
+          <h5 class="completed">Completed</h5>
+          <h5 class="pending">Pending</h5>
+          <h5 class="deleted">Deleted</h5>
+        </div>
+        <div class="task">
+          <p>EAT</p>
+          <div class="dropdown">
+            <button class="dropbtn">▼</button>
+            <div class="dropdown-content">
+              <a href="#" onclick="setTaskStatus(this)">COMPLETED</a>
+              <a href="#" onclick="setTaskStatus(this)">PENDING</a>
+              <a href="#" onclick="setTaskStatus(this)">DELETED</a>
+            </div>
+          </div>
+        </div>
+        <div class="task">
+          <p>CODE</p>
+          <div class="dropdown">
+            <button class="dropbtn">▼</button>
+            <div class="dropdown-content">
+              <a href="#" onclick="setTaskStatus(this)">COMPLETED</a>
+              <a href="#" onclick="setTaskStatus(this)">PENDING</a>
+              <a href="#" onclick="setTaskStatus(this)">DELETED</a>
+            </div>
+          </div>
+        </div>
+        <div class="add-task">
+          <p>New Task</p>
+          <span onclick="addNewTask()">+</span>
+        </div>
+      </section>
+    </div>
+  </body>
+  <script>
+    function setTaskStatus(element) {
+      const taskDiv = element.closest(".task");
+      if (element.textContent === "COMPLETED") {
+        taskDiv.style.backgroundColor = "rgba(1, 178, 114, 0.2)";
+        taskDiv.style.color = "green";
+      } else if (element.textContent === "DELETED") {
+        taskDiv.style.backgroundColor = "rgba(231, 175, 164, 0.3)";
+        taskDiv.style.color = "red";
+      } else {
+        taskDiv.style.backgroundColor = "#fff";
+      }
+    }
+
+    function addNewTask() {
+      const container = document.querySelector(".container section");
+      const newTaskDiv = document.createElement("div");
+      newTaskDiv.className = "task";
+
+      const inputElement = document.createElement("input");
+      inputElement.setAttribute("type", "text");
+      inputElement.setAttribute("placeholder", "Type task name...");
+      inputElement.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          const taskName = event.target.value;
+          const taskStatus = "completed";
+          const username = "edoka";
+
+          const data = {
+            taskName,
+            taskStatus,
+            username,
+          };
+          // send task to backend
+          fetch("/task", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Data", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+          createTaskElement(container, taskName);
+          container.removeChild(newTaskDiv);
+        }
+      });
+
+      newTaskDiv.appendChild(inputElement);
+      const addTaskDiv = document.querySelector(".add-task");
+      container.insertBefore(newTaskDiv, addTaskDiv);
+    }
+
+    function createTaskElement(container, taskName) {
+      const taskDiv = document.createElement("div");
+      taskDiv.className = "task";
+
+      const taskNameP = document.createElement("p");
+      taskNameP.textContent = taskName;
+      taskDiv.appendChild(taskNameP);
+
+      const dropdownDiv = document.createElement("div");
+      dropdownDiv.className = "dropdown";
+      const dropBtn = document.createElement("button");
+      dropBtn.className = "dropbtn";
+      dropBtn.innerHTML = "▼";
+      dropdownDiv.appendChild(dropBtn);
+      const dropdownContent = document.createElement("div");
+      dropdownContent.className = "dropdown-content";
+
+      ["COMPLETED", "PENDING", "DELETED"].forEach((status) => {
+        const statusLink = document.createElement("a");
+        statusLink.href = "#";
+        statusLink.textContent = status;
+        statusLink.addEventListener("click", function () {
+          setTaskStatus(statusLink);
+        });
+        dropdownContent.appendChild(statusLink);
+      });
+
+      dropdownDiv.appendChild(dropdownContent);
+      taskDiv.appendChild(dropdownDiv);
+
+      const addTaskDiv = document.querySelector(".add-task");
+      container.insertBefore(taskDiv, addTaskDiv);
+    }
+  </script>
+</html>

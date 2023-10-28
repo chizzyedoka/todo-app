@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Todo App</title>
+    <link rel="stylesheet" href="/styles/taskstyle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <p>Welcome, <span id="username"><%= username %></span>!</p>
+      <h1>Task Overview</h1>
+      <div id="overview">
+        <p>
+          Completed: <span id="completed-count"><%= completedTasks %></span>
+        </p>
+        <p>Pending: <span id="pending-count"><%= pendingTasks %></span></p>
+        <p>Deleted: <span id="deleted-count"><%= deletedTasks %></span></p>
+      </div>
+    <script>
+      // JavaScript for adding, editing, and deleting tasks
+      <!-- ... (same as in the original code) ... -->
+    </script>
+  </body>
+</html>

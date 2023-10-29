@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
 
   // validate user exists or not
   let user = await User.findOne({ username });
-  if (user) return res.status(400).send("User exits already");
+  if (user) return res.status(403).send("User exits already");
 
   // create new user in the database
   user = new User({ username, password });

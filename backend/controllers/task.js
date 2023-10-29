@@ -24,12 +24,13 @@ const getAllTask = async (req, res) => {
 
 const createTask = async (req, res) => {
   const { error } = validateBody(req.body);
+  console.log(error);
   if (error) return res.status(400).send(error.details[0].message);
   const username = req.user.name;
   console.log(req.body);
   let { taskName, taskStatus } = req.body;
   const task = new Task({ taskName, taskStatus, username });
-  console.log(task);
+  // console.log(task);
   await task.save();
   res.redirect("/task");
   // res.status(201).json({
@@ -41,26 +42,31 @@ const getOneTask = async (req, res) => {
   const username = req.user.name;
   const taskName = req.params.taskname;
   const task = await Task.findOne({ taskName, username });
+  // console.log("Got this from database", task);
   if (!task)
     return res.status(404).json({
       message: "Task not found",
     });
-  res.status(200).send(task);
+  res.status(200).json(task);
 };
 
 const updateTask = async (req, res) => {
   const username = req.user.name;
   const task = await Task.findOneAndUpdate(
-    { username },
-    { taskName: req.params.taskname },
-    { taskStatus: req.body.taskStatus },
+    {
+      username,
+      taskName: req.params.taskname, // Using parameter from URL
+    },
+    { taskStatus: req.body.taskStatus }, // Updating taskStatus from request body
     { new: true }
   );
+
   if (!task)
     return res.status(404).json({
       message: "Given task doesn't exist",
     });
-  res.status(200).send(task);
+  // console.log("Updated task to:", task);
+  res.json(task);
 };
 
 const deleteTask = async (req, res) => {

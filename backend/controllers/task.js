@@ -27,7 +27,7 @@ const createTask = async (req, res) => {
   console.log(error);
   if (error) return res.status(400).send(error.details[0].message);
   const username = req.user.name;
-  console.log(req.body);
+  // console.log(req.body);
   let { taskName, taskStatus } = req.body;
   const task = new Task({ taskName, taskStatus, username });
   // console.log(task);

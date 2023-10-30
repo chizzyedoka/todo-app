@@ -11,7 +11,6 @@ const taskSchema = mongoose.Schema({
     enum: ["COMPLETED", "PENDING", "DELETED"],
     default: "pending",
   },
-  createdAt: Date,
   username: String,
 });
 

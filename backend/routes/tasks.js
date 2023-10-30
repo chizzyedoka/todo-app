@@ -23,16 +23,6 @@ const { findTask } = require("../middleware/task");
 // get all tasks
 router.get("/", auth, getAllTask);
 
-router.get("/overview", (req, res) => {
-  username = req.body.username;
-  res.render("overview", {
-    completedTasks,
-    pendingTasks,
-    deletedTasks,
-    username,
-  });
-});
-
 // get a specific task
 router.get("/:taskname", auth, getOneTask);
 

@@ -6,9 +6,12 @@ const mongoose = require("mongoose");
 const signupRoute = require("./routes/usersignup");
 const signinRoute = require("./routes/login");
 const taskRoute = require("./routes/tasks");
+const overviewRoute = require("./routes/overview");
 const welcomeRoute = require("./routes/welcome");
 const errorHandler = require("./middleware/error");
 const app = express();
+const uri = process.env.MONGODB_URI;
+const PORT = process.env.PORT;
 
 // set EJS as template engine
 app.set("view engine", "ejs");
@@ -19,13 +22,13 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Listening on port 5000");
 });
 
 // connect to mongoose database
 mongoose
-  .connect("mongodb://0.0.0.0:27017/todo-app-node", {
+  .connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useUnifiedTopology: true,
@@ -44,6 +47,9 @@ app.use("/login", signinRoute);
 
 // task routes
 app.use("/task", taskRoute);
+
+// overview
+app.use("/overview", overviewRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome");
